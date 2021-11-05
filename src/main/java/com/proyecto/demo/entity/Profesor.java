@@ -36,8 +36,9 @@ public class Profesor extends Persona implements Serializable{
 				dniPersona, correoPersona, direccionPersona, distrito);
 		this.sueldo=sueldo;
 	}
-	
-	
-	
+
+	public Profesor() {
+		super();
+	}
 	
 }

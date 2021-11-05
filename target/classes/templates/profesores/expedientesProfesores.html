@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="./plantilla/UITemplateProfesor :: head">
+<meta charset="UTF-8">
+<title>Profesor</title>
+<style>
+	.disabled {
+    /*cursor: not-allowed;*/
+    cursor: pointer;
+    pointer-events: none;
+    }
+</style>
+</head>
+<body>
+	 <div th:replace="./plantilla/UITemplateProfesor :: arriba"></div>
+	 <div class="d-flex">
+	
+		<div th:replace="./plantilla/UITemplateProfesor :: izquierda"></div>
+		<div class="w-100">
+			<div id="content" class="w-100 mt-0">
+	              <section class="bg-mix m-3">
+	                
+						<h4 class="text-center">Listado de Profesores</h4>
+						
+						<!-- Button trigger modal -->
+						<button type="button" class="btn btn-primary mt-5" data-toggle="modal" data-target="#modalProfesor" id="btnNuevo">
+						  Nuevo Profesor
+						</button>
+						
+						<table class="table table-striped table-bordered mt-5" id="idTableProfesores">
+									  <thead>
+									   <tr>
+							                <th>Código</th>
+							                <th>Nombre</th>
+							                <th>Paterno</th>
+							                <th>Materno</th>
+							                <th>Sexo</th>
+							                <th>DNI</th>
+							                <th>Fecha</th>
+							                <th>Distrito</th>
+							                <th></th>
+							                <th></th>
+							            </tr>
+									  </thead>
+									  <tbody>
+										<tr th:each="bean:${profesores}">
+									      <td th:text="${bean.codigoPersona}"></td>
+									      <td th:text="${bean.nombrePersona}"></td>
+									      <td th:text="${bean.paternoPersona}"></td>
+									      <td th:text="${bean.maternoPersona}"></td>
+									      <td th:text="${bean.sexoPersona}"></td>
+									      <td th:text="${bean.dniPersona}"></td>
+									      <td th:text="${bean.fechaNacimiento}"></td>
+										  <td th:text="${bean.distrito.distrito}"></td>
+									      <td><a class="btn btn-info btn-datos" data-toggle="modal" data-target="#modalDatos"><i class="fas fa-user-edit fa-lg"></i></a></td>
+									      <td><a class="btn btn-danger btn-eliminar"><i class="fas fa-trash fa-lg"></i></a></td>
+									    </tr>  
+									  </tbody>
+						</table>
+	              </section>
+	        </div>
+		</div>
+	 </div>
+	 
+		<!-- begin #modal-dialog : MODAL NUEVO PROFESOR-->
+		<div class="modal fade" id="modalProfesor" data-backdrop="static" 
+							data-keyboard="false" tabindex="-1" 
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-login modal-lg" >					
+							<div class="modal-content">
+								<div class="modal-header bg-blue-darker">
+									<h4 class="modal-title text-white">Profesor</h4>
+								</div>
+								<div class="modal-body">
+									<form method="post" id="idRegistra" th:object="${profesor}" th:action="@{/profesor/guardar-profesor}">	
+										<div class="container">
+											<div class="row">
+												<div class="form-group has-feedback col-md-6">
+														<label for="exampleInputEmail1"><b>Nombre</b></label><br>		
+														<i class="fas fa-file-signature form-control-feedback2"></i>	
+														<input type="text" class="form-control" id="idNombre" placeholder="Ingresar nombre" th:field="*{nombrePersona}">																										
+												</div>
+												<div class="form-group has-feedback col-md-6">
+														<label for="exampleInputEmail1"><b>Apellido paterno</b></label><br>
+														<i class="fas fa-file-signature form-control-feedback2"></i>	
+														<input type="text" class="form-control" id="idPaterno" placeholder="Ingresar apellido paterno" th:field="*{paternoPersona}">													
+												</div>
+												<div class="form-group has-feedback col-md-6">
+														<label for="exampleInputEmail1"><b>Apellido materno</b></label><br>
+														<i class="fas fa-file-signature form-control-feedback2"></i>	
+														<input type="text" class="form-control" id="idMaterno" placeholder="Ingresar apellido materno" th:field="*{maternoPersona}">													
+												</div>
+												<div class="form-group has-feedback col-md-6">
+														<label for="exampleInputEmail1"><b>Sexo</b></label><br>
+														<i class="fas fa-file-signature form-control-feedback2"></i>	
+														<select class="form-control" id="idSexo" th:field="*{sexoPersona}">
+																  <option value=" ">[Seleccione sexo]</option>
+																  <option value="Masculino">Masculino</option>
+																  <option value="Femenino">Femenino</option>
+														</select>													
+												</div>
+												<div class="form-group has-feedback col-md-6">
+														<label for="exampleInputEmail1"><b>Dni</b></label><br>
+														<i class="fas fa-file-signature form-control-feedback2"></i>	
+														<input type="text" class="form-control" id="idDni" placeholder="Ingresar DNI" th:field="*{dniPersona}">													
+												</div>
+												<div class="form-group has-feedback col-md-6">	
+													<label for="exampleInputEmail1" class="text-center"><b>Fecha Nacimiento</b></label><br>
+												    <i class="fas fa-calendar-week form-control-feedback2"></i>
+												    <input type="text" style="background-color:#aed6f1" class="form-control" id="usr1" name="fecha" placeholder="YYYY-MM-DD" autocomplete="off">
+												    <span class="help-block" id="firstNameMessage"></span>
+											    </div>											
+												<div class="form-group has-feedback col-md-6">
+													<label for="exampleInputEmail1"><b>Celular</b></label><br>	
+													<i class="fas fa-pen-fancy form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idCelular" placeholder="Ingresar número celular" th:field="*{celularPersona}">	
+												</div>
+											   <div class="form-group has-feedback col-md-6">	
+														<label for="exampleInputEmail1" class="text-center"><b>Correo</b></label><br>
+												        <i class="fas fa-prescription-bottle-alt form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idCorreo" placeholder="Ingresar correo" th:field="*{correoPersona}">
+
+											  </div>
+											   <div class="form-group has-feedback col-md-6">	
+														<label for="exampleInputEmail1" class="text-center"><b>Distrito</b></label><br>
+												        <i class="fas fa-prescription-bottle-alt form-control-feedback2"></i>
+													    <select class="form-control" name="distrito" id="idDistrito">
+													      <option value="-1">[Seleccione Distrito]</option>
+														  <option th:each="distrito:${distritos}"
+														  				th:value="${distrito.idDist}"
+														  				th:utext="${distrito.distrito}">	
+													    </select>
+
+											  </div>
+											  <div class="form-group has-feedback col-md-12">
+													<label for="exampleInputEmail1"><b>Dirección</b></label><br>	
+													<i class="fas fa-pen-fancy form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idDireccion" placeholder="Ingresar dirección" th:field="*{direccionPersona}">	
+											 </div>					  									  	
+										   </div>
+										</div>								
+										<div class="col-md-12 text-center mt-4"> 										
+											<button type="submit" id="Guardar" class="btn btn-primary btn-lg" title="Guardar datos">
+												<i class="fas fa-save fa-lg"></i>
+											</button>
+											<button type="button" id="btnCerrar" class="btn btn-danger btn-lg" data-dismiss="modal" title="Cerrar ventana">
+												<i class="fas fa-window-close fa-lg"></i>
+											</button>
+										</div> 																								
+									</form>
+								</div>
+							</div>
+						</div>
+		</div>
+		<!-- FIN Modal NUEVO PROFESOR-->		
+		
+		
+		<!-- begin #modal-dialog : MODAL DATOS PROFESOR-->
+		<div class="modal fade" id="modalDatos" data-backdrop="static" 
+							data-keyboard="false" tabindex="-1" 
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-login modal-lg" >					
+							<div class="modal-content">
+								<div class="modal-header bg-blue-darker">
+									<h4 class="modal-title text-white">Profesor</h4>
+								</div>
+								<div class="modal-body">
+									<form method="post">	
+										<div class="container">
+											<div class="row">
+												<div class="form-group has-feedback col-md-4">
+													<label for="exampleInputEmail1"><b>Codigo</b></label><br>		
+													<i class="fas fa-file-signature form-control-feedback2"></i>	
+													<input type="text" class="form-control" id="idCodigoDatos" readonly>																										
+												</div>
+											</div>
+											<div class="row">
+												<div class="form-group has-feedback col-md-6">
+													<label for="exampleInputEmail1"><b>Nombre</b></label><br>		
+													<i class="fas fa-file-signature form-control-feedback2"></i>	
+													<input type="text" class="form-control" id="idNombreDatos" readonly>																										
+												</div>
+												<div class="form-group has-feedback col-md-6">
+													<label for="exampleInputEmail1"><b>Apellido paterno</b></label><br>
+													<i class="fas fa-file-signature form-control-feedback2"></i>	
+													<input type="text" class="form-control" id="idPaternoDatos" readonly>													
+												</div>
+												<div class="form-group has-feedback col-md-6">
+													<label for="exampleInputEmail1"><b>Apellido materno</b></label><br>
+													<i class="fas fa-file-signature form-control-feedback2"></i>	
+													<input type="text" class="form-control" id="idMaternoDatos" readonly>													
+												</div>
+												<div class="form-group has-feedback col-md-6">
+													<label for="exampleInputEmail1"><b>Sexo</b></label><br>
+													<i class="fas fa-file-signature form-control-feedback2"></i>	
+													<input type="text" class="form-control" id="idSexoDatos" readonly>												
+												</div>
+												<div class="form-group has-feedback col-md-6">
+													<label for="exampleInputEmail1"><b>Dni</b></label><br>
+													<i class="fas fa-file-signature form-control-feedback2"></i>	
+													<input type="text" class="form-control" id="idDniDatos" readonly>													
+												</div>
+												<div class="form-group has-feedback col-md-6">	
+													<label for="exampleInputEmail1" class="text-center"><b>Fecha Nacimiento</b></label><br>
+												    <i class="fas fa-calendar-week form-control-feedback2"></i>
+												   <input type="text" class="form-control" id="idFechaDatos" readonly>
+											    </div>											
+												<div class="form-group has-feedback col-md-6">
+													<label for="exampleInputEmail1"><b>Celular</b></label><br>	
+													<i class="fas fa-pen-fancy form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idCelularDatos" readonly>	
+												</div>
+											   <div class="form-group has-feedback col-md-6">	
+													<label for="exampleInputEmail1" class="text-center"><b>Correo</b></label><br>
+												    <i class="fas fa-prescription-bottle-alt form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idCorreoDatos" readonly>
+											  </div>			     
+											  <div class="form-group has-feedback col-md-6">	
+													<label for="exampleInputEmail1" class="text-center"><b>Distrito</b></label><br>
+												    <i class="fas fa-prescription-bottle-alt form-control-feedback2"></i>
+												    <input type="text" class="form-control" id="idDistritoDatos" readonly>
+											  </div>
+											  <div class="form-group has-feedback col-md-12">
+													<label for="exampleInputEmail1"><b>Dirección</b></label><br>	
+													<i class="fas fa-pen-fancy form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idDireccionDatos" readonly>	
+											 </div>					  									  	
+										   </div>
+										</div>								
+										<div class="col-md-12 text-center mt-4"> 										
+											<button type="button" id="btnCerrar" class="btn btn-danger btn-lg" data-dismiss="modal" title="Cerrar ventana">
+												<i class="fas fa-window-close fa-lg"></i>
+											</button>
+										</div> 																								
+									</form>
+								</div>
+							</div>
+						</div>
+		</div>
+		<!-- FIN Modal DATOS PROFESOR-->				
+		
+		
+<div th:insert="./plantilla/UITemplateProfesor :: scripts"></div>
+
+<script th:inline="javascript" th:if="${MENSAJE!=null}">
+	var m=/*[[${MENSAJE}]]*/ null;
+	Swal.fire({
+	  icon: 'success',
+	  title: m,
+	  confirmButtonText:'Cerrar'
+	 })
+</script>
+
+
+	
+<script>
+
+	$(function() {
+	
+		$('#usr1').datepicker({
+			'format': 'yyyy-mm-dd',
+			'autoclose': true
+		});
+	
+	
+	});
+	$('#usr1').on('changeDate show', function(e) {
+	    $('#idRegistra').bootstrapValidator('revalidateField', $('#usr1'));
+	});
+	
+	$(document).ready(function(){
+		$('#idTableProfesores').DataTable();
+	})
+
+	//evento click al bot�n con clase "btn-datos"
+	$(document).on("click",".btn-datos",function(){
+		//obtener el valor del atributo "href" del boton(etiqueta a) seleccionado
+		let cod;
+		cod=$(this).parents("tr").find("td")[0].innerHTML;	
+		//
+		$.get("/profesor/buscar-profesor?codigo="+cod,function(response){
+			$("#idCodigoDatos").val(response.codigoPersona);
+			$("#idNombreDatos").val(response.nombrePersona);
+			$("#idPaternoDatos").val(response.paternoPersona);
+			$("#idMaternoDatos").val(response.maternoPersona);
+			$("#idSexoDatos").val(response.sexoPersona);
+			$("#idDniDatos").val(response.dniPersona);
+			$("#idFechaDatos").val(response.fechaNacimiento);
+			$("#idCelularDatos").val(response.celularPersona);
+			$("#idCorreoDatos").val(response.correoPersona);
+			$("#idDistritoDatos").val(response.distrito.distrito);
+			$("#idDireccionDatos").val(response.direccionPersona);
+			
+		})
+		
+		
+	})
+
+	//evento click al bot�n con clase "btn-Eliminar"
+	$(document).on("click",".btn-eliminar",function(event){
+		  let cod;
+		  cod=$(this).parents("tr").find("td")[0].innerHTML;
+		  event.preventDefault();
+		 
+		  Swal.fire({
+					  title: 'Seguro de eliminar profesor: ',
+					  //text: "Seguro de eliminar",
+					  icon: 'warning',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Si',
+					  cancelButtonText:'No'
+					}).then((result) => {
+					  if (result.isConfirmed) {
+							window.location="/profesor/eliminar-profesor?codigo="+cod;				
+					  }
+					})		  
+	})
+
+//evento click al boton con ID "btnCerrar"
+$(document).on("click","#btnCerrar",function(){
+	//reiniciar validacion
+	$('#idRegistra').data("bootstrapValidator").resetForm(true);
+	//limpiar controles
+	$('#idRegistra').trigger("reset");
+	//
+	$("#idCodigo").val(0);
+})
+
+                
+</script>
+<script type="text/javascript">    
+    $(document).ready(function(){     
+
+        $('#idRegistra').bootstrapValidator({     
+        	feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+        	 fields:{
+        		 Nombre: {
+					selector:'#idNombre', 
+                    validators: {    
+                        notEmpty: {    
+                            message: 'Ingrese nombre'    
+                        }      
+                    }    
+                }, 
+	       		 Paterno: {
+					 selector:'#idPaterno',
+	                 validators: {    
+	                     notEmpty: {    
+	                         message: 'Ingrese apellido paterno'    
+	                     }      
+	                 }    
+	             }, 
+        		 Materno: {
+					 selector:'#idMaterno',
+                     validators: {    
+                         notEmpty: {    
+                             message: 'Ingrese apellido materno'    
+                         }      
+                     }    
+                 }, 
+        		 Sexo: {
+					 selector:'#idSexo',
+                     validators: {    
+                         notEmpty: {    
+                             message: 'Seleccione sexo'    
+                         }      
+                     }    
+                 }, 
+                 Dni: {
+				 selector:'#idDni',
+                     validators: {    
+                         notEmpty: {    
+                             message: 'Ingrese DNI'    
+                         },
+                         regexp:{
+     		 				regexp:/^\d{8}$/,
+     		 				message:'Ingrese DNI 8 cifras'
+     		 			}
+                     }    
+                 }, 
+                 Celular: {
+					 selector:'#idCelular',
+                     validators: {    
+                         notEmpty: {    
+                             message: 'Ingrese celular'    
+                         },
+                         regexp:{
+      		 				regexp:/^\d{9}$/,
+      		 				message:'Ingrese n�mero de celular 9 cifras'
+      		 			}
+                     }    
+                 }, 
+                 Correo: {
+					 selector:'#idCorreo',
+                     validators: {    
+                         notEmpty: {    
+                             message: 'Ingrese correo'    
+                         }
+                     }    
+                 }, 
+                 Direccion: {
+					 selector:'#idDireccion',
+                     validators: {    
+                         notEmpty: {    
+                             message: 'Ingrese dirección'    
+                         }
+                     }    
+                 },                
+                fecha: {
+                    validators: {    
+                        notEmpty: {    
+                            message: 'Seleccione fecha '    
+                        },
+                        date: {
+                            format: 'YYYY-MM-DD',
+                            message: 'Fecha formata yyyy-MM-dd'
+                        },
+                    }    
+                },               
+            	distrito:{
+    		 		validators:{
+    		 			regexp:{
+    		 				regexp:/^([0-9]+|[1-9][0-9]+)$/,
+    		 				message:'Seleccione distrito'
+    		 			}
+    		 		}
+    		 	}    		 	
+                
+        	 }
+        });   
+        
+			
+    });    
+</script>   
+	
+</body>
+</html>

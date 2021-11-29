@@ -55,3 +55,7 @@ create table curso(
     cod_est		int,		/*references estudiante*/
     cod_prof	int			/*references profesor*/
 );
+
+insert into tb_rol values(1, "ROL_ADMIN");
+insert into tb_rol values(2, "ROL_PROF");
+insert into tb_rol values(3, "ROL_ALUMN");
